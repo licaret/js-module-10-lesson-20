@@ -44,7 +44,6 @@ function generatePostsForSelectedUser() {
 
 function clearPosts() {
   listElement.innerHTML = '';
-  generatePostsForSelectedUser();
 }
 
 fetch("https://jsonplaceholder.typicode.com/users")
@@ -68,4 +67,5 @@ fetch("https://jsonplaceholder.typicode.com/users")
 
 selectElement.addEventListener("change", () => {
   clearPosts();
+  generatePostsForSelectedUser();
 });
