@@ -1,5 +1,12 @@
+const LIMIT = 3;
+
 const listElement = document.getElementById("list");
 const selectElement = document.getElementById("userSelect");
+const previousButton = document.getElementById("previous");
+const nextButton = document.getElementById("next");
+const pageNumber = document.getElementById("pageNumber");
+
+let page = 3;
 
 function addPostHTML(post) {
   const postDiv = document.createElement("div");
@@ -34,7 +41,7 @@ function addPostHTML(post) {
 
 function generatePostsForSelectedUser() {
   const userId = document.getElementById("userSelect").value;
-  fetch(`https://jsonplaceholder.typicode.com/posts?userId=${userId}`)
+  fetch(`https://jsonplaceholder.typicode.com/posts?userId=${userId}&_limit=${LIMIT}&_page=${page}`)
     .then(res => res.json())
     .then(postRes => {
       postRes.forEach(post => addPostHTML(post));
@@ -60,12 +67,28 @@ fetch("https://jsonplaceholder.typicode.com/users")
     });
 
     selectElement.append(fragmentElement);
+    pageNumber.textContent = page;
 
     generatePostsForSelectedUser();
   })
   .catch(err => console.error(err));
 
 selectElement.addEventListener("change", () => {
+  clearPosts();
+  page = 1;
+  generatePostsForSelectedUser();
+});
+
+previousButton.addEventListener("click", () => {
+  page--;
+  pageNumber.textContent = page;
+  clearPosts();
+  generatePostsForSelectedUser();
+});
+
+nextButton.addEventListener("click", () => {
+  page++;
+  pageNumber.textContent = page;
   clearPosts();
   generatePostsForSelectedUser();
 });
